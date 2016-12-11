@@ -1,0 +1,75 @@
+.loader .container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+.loader .ring {
+    border: 20px solid #fff;
+    border-radius: 240px;
+    height: 240px;
+    width: 240px;
+    position: absolute;
+    left: -130px;
+    top: -130px;
+    opacity: 0.0; 
+    animation: pulsate 10s ease-out;
+    animation-iteration-count: infinite;
+}
+@-webkit-keyframes pulsate {
+    0% {
+        -webkit-transform: scale(0.0, 0.0);
+        opacity: 0.0;
+        border-color: #00a1f1;
+    }
+    12.5% {
+        opacity: 1.0;
+        border-color: #00a1f1;
+    }
+    25% {
+        -webkit-transform: scale(1.0, 1.0);
+        opacity: 0.0;
+        border-color: #00a1f1;
+    }
+    25.1% {
+        -webkit-transform: scale(0.0, 0.0);
+        opacity: 0.0;
+        border-color: #7cbb00;
+    }
+    37.5% {
+        opacity: 1.0;
+        border-color: #7cbb00;
+    }
+    50% {
+        -webkit-transform: scale(1.0, 1.0);
+        opacity: 0.0;
+        border-color: #7cbb00;
+    }
+    50.1% {
+        -webkit-transform: scale(0.0, 0.0);
+        opacity: 0.0;
+        border-color: #ffbb00;
+    }
+    62.5% {
+        opacity: 1.0;
+        border-color: #ffbb00;
+    }
+    75% {
+        -webkit-transform: scale(1.0, 1.0);
+        opacity: 0.0;
+        border-color: #ffbb00;
+    }
+    75.1% {
+        -webkit-transform: scale(0.0, 0.0);
+        opacity: 0.0;
+        border-color: #f65314;
+    }
+    87.5% {
+        opacity: 1.0;
+        border-color: #f65314;
+    }
+    100% {
+        -webkit-transform: scale(1.0, 1.0);
+        opacity: 0.0;
+        border-color: #f65314;
+    }
+}

@@ -1,0 +1,14 @@
+<style>
+	.temperature {
+		padding-top: 10px;
+		width: 100%;
+		text-align: center;
+		font-size: 30px;
+	}
+</style>
+<div class="temperature">
+	<div>
+		<span class="temp"><i class="wi wi-thermometer"></i> {{$ctrl.temperature| number:0}}<i class="wi wi-celsius"></i></span>&nbsp;&nbsp;&nbsp;<span class="temp"><i class="wi wi-humidity"></i>  {{$ctrl.humidity| number:0}}</span>
+	</div>
+</div>
+

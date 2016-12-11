@@ -1,0 +1,9 @@
+{
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-help": "^1.6.1",
+        "gulp-sftp": "^0.1.5",
+        "gulp-ssh": "^0.6.0",
+        "gulp-util": "^3.0.7"
+    }
+}

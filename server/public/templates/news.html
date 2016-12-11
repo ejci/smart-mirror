@@ -1,0 +1,6 @@
+<div class="news">
+    <div ng-repeat="article in $ctrl.articles | limitTo:3">
+      <b>{{article.title}}</b>
+      <p>{{article.description}}</p>
+    </div>
+</div>

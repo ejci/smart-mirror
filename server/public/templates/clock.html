@@ -1,0 +1,32 @@
+<style>
+	.clock {
+		padding: 10px;
+		width: 100%;
+		text-align: center;
+	}
+	.clock .day{
+		font-size: 20px;
+	}
+	.clock .time{
+		font-size: 80px;		
+	}
+	.clock .date{
+		font-size: 20px;		
+	}
+	.clock .hidden{
+		/*visibility: hidden;*/
+		color: #111;
+	}
+</style>
+
+<div class="clock">
+	<div class="day">
+		<span>{{$ctrl.date | date: 'EEEE'}}</span>
+	</div>
+	<div class="time">
+		<span>{{$ctrl.date | date : 'HH'}}</span><span ng-class="$ctrl.colon?'':'hidden'">:</span><span>{{$ctrl.date | date : 'mm'}}</span>
+	</div>
+	<div class="date">
+		<span>{{$ctrl.date | date: 'd MMMM yyyy'}}</span>
+	</div>
+</div>

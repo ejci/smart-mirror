@@ -1,0 +1,29 @@
+{
+    "version": "0.0.1",
+    "weather": {
+        "apiKey": "<API_KEY from openweathermap.org>",
+        "city": "<CITY,COUNTRY for example: Haarlem,nl>",
+        "expiration": 3600
+    },
+    "news": {
+        "apiKey": "<API_KEY from newsapi.org>",
+        "source": "<source for example: google-news>",
+        "expiration": 1800
+    },
+    "quote": {
+        "expiration": 21600
+    },
+    "finance": {},
+    "google": {
+        "client": {
+            "id": "<GOOGLE_OAUTH2_CLIENT_ID>",
+            "secret": "<GOOGLE_OAUTH2_CLIENT_SECRET>"
+        }
+    },
+    "nest": {
+        "product": {
+            "id": "<NEST_OAUTH2_PRODUCT_ID>",
+            "secret": "<NEST_OAUTH2_PRODUCT_SECRET>"
+        }
+    }
+}

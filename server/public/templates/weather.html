@@ -1,0 +1,32 @@
+<style>
+	.weather {
+		padding-top: 10px;
+		width: 100%;
+		text-align: center;
+	}
+	
+	.weather .icon {
+		font-size: 50px;
+		padding: 5px;
+	}
+	
+	.weather .temp {
+		font-size: 60px;
+		padding: 5px;
+	}
+	
+	.weather .wind {
+		margin-top: 5px;
+		font-size: 20px;
+	}
+</style>
+<div class="weather">
+	<div>
+		<span class="icon"><i class="wi wi-{{$ctrl.icon}}"></i></span>
+		<span class="temp"> {{$ctrl.main.temp| number:0}}<i class="wi wi-celsius"></i></span>
+	</div>
+	<div class="wind">
+		<i class="wi wi-wind towards-{{$ctrl.wind.deg| number:0}}-deg"></i>
+		<span>{{$ctrl.wind.speed}} m/s</span>
+	</div>
+</div>

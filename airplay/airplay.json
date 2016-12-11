@@ -1,0 +1,10 @@
+{
+    "description": "Airplay via shairport-sync",
+    "name": "Mirror",
+    "script": {
+        "start": "airplay_start.sh",
+        "stop": "airplay_stop.sh",
+        "meta": "meta"
+    },
+    "endpoint": "http://127.0.0.1:3000/internal/airplay/meta"
+}

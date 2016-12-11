@@ -1,0 +1,9 @@
+{
+    "description": "Temperature and humidity sensor",
+    "script": "dht.py",
+    "type": 11,
+    "pin": 4,
+    "refresh": 30,
+    "cummulative": 10,
+    "endpoint": "http://127.0.0.1:3000/internal/temperature"
+}
