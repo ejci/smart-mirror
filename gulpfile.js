@@ -3,17 +3,20 @@ var gutil = require('gulp-util');
 var gulp = require('gulp-help')(require('gulp'));
 var sftp = require('gulp-sftp');
 var SSH = require('gulp-ssh')
+var print = require('gulp-print');
+var intercept = require('gulp-intercept');
 var config = require('./.config.json')
 
+var credentials = {
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    remotePath: '~/'
+};
 var ssh = new SSH({
-    ignoreErrors: false,
-    sshConfig: {
-        host: config.host,
-        user: config.user,
-        password: config.password
-    }
+    ignoreErrors: true,
+    sshConfig: credentials
 });
-
 
 //default task
 gulp.task('default', false, function () {
@@ -40,23 +43,30 @@ gulp.task('copy-airplay', 'Copy relevant files to ' + config.user + '@' + config
 
 });
 
-//copy sensor to rpi
+//copy google assistant to rpi
+gulp.task('copy-google-assistant', 'Copy relevant files to ' + config.user + '@' + config.host + ' (~/googleAssitant/).', function () {
+    return gulp.src(['googleAssistant/**', 'googleAssistant/googleAssistantPy/**', 'googleAssistant/googleAssistantPy/**', '!googleAssistant/.DS_Store', '!googleAssistant/.gitignore'])
+        .pipe(ssh.dest('googleAssistant/'));
+
+});
+
+//copy main to rpi
 gulp.task('copy-main', 'Copy main files to ' + config.user + '@' + config.host + ' (~/).', function () {
-    return gulp.src(['autostart.sh','refresh.sh','start.sh'])
-        .pipe(ssh.dest('~/'));
+    return gulp.src(['autostart.sh', 'refresh.sh', 'start.sh', 'vnc.sh', 'permissions.sh'])
+        .pipe(ssh.dest('.ssh-temp'));
 });
 
 //copy all
-gulp.task('copy', ['copy-server','copy-sensor','copy-airplay'],function(){
+gulp.task('copy', ['copy-main', 'copy-server', 'copy-sensor', 'copy-airplay', 'copy-google-assistant'], function () {
     return gulp.start('permissions');
 });
 
 gulp.task('npm-install', 'Run npm install in ~/server, ~/airplay & ~/sensor', function () {
-    return ssh.exec(['cd ~/server && npm install','cd ~/sensor && npm install','cd ~/airplay && npm install']);
+    return ssh.exec(['cd ~/server && npm install', 'cd ~/sensor && npm install', 'cd ~/airplay && npm install']);
 });
 
 gulp.task('permissions', 'Fix permissions', function () {
-    return ssh.exec(['chmod +x ~/permissions.sh','~/permissions.sh']);
+    return ssh.exec(['mv ~/.ssh-temp/* ~/', 'chmod +x ~/permissions.sh', '~/permissions.sh']);
 });
 
 //remote rpi chrome refresh
@@ -77,5 +87,14 @@ gulp.task('rpi-shutdown', 'Execute shutdown -h now on ' + config.user + '@' + co
         .exec(['sudo shutdown -h now']);
 });
 
+//remote rpi chrome refresh
+gulp.task('rpi-vnc', 'Will start the VNC server on rpi', function () {
+    return ssh
+        .exec(['~/vnc.sh']);
+});
+
 //copy and reload app + browser
 gulp.task('refresh', ['copy', 'rpi-refresh']);
+
+//copy and reload app + browser
+gulp.task('deploy', ['copy', 'npm-install', 'rpi-refresh']);
