@@ -1,5 +1,5 @@
 var Gpio = require('onoff').Gpio;
-var request = require('request');
+var redis = require("redis").createClient();
 var config = require(__dirname + '/pir.json');
 
 var pir = new Gpio(config.pin, 'in', 'both');
@@ -11,18 +11,9 @@ var isMovement = false;
 var movementDetected = function () {
     if (!isMovement) {
         //console.log('movement detected...');
-        request({
-            url: config.endpoint,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            json: {
-                movement: true
-            }
-        }, function (err, res, body) {
-            //dont care
-        });
+        redis.publish(config.event, JSON.stringify({
+            movement: true
+        }));
     }
     isMovement = true;
     return;
@@ -32,18 +23,9 @@ var movementDetected = function () {
 var movementStoped = function () {
     if (isMovement) {
         //console.log('movement stopped...');
-        request({
-            url: config.endpoint,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            json: {
-                movement: false
-            }
-        }, function (err, res, body) {
-            //dont care
-        });
+        redis.publish(config.event, JSON.stringify({
+            movement: false
+        }));
     }
     isMovement = false;
     return;
@@ -52,7 +34,7 @@ var movementStoped = function () {
 //watch value
 pir.watch(function (err, value) {
     if (!err) {
-        if(timer){
+        if (timer) {
             clearTimeout(timer);
         }
         timer = setTimeout(movementStoped, timeout);
@@ -66,3 +48,4 @@ console.log(config.description);
 console.log('GPIO pin           : ' + config.pin);
 console.log('Timeout            : ' + Math.round(config.timeout / 60, 0) + 'm ' + config.timeout % 60 + 's');
 console.log('Endpoint           : ' + config.endpoint);
+console.log('Event              : ' + config.event);

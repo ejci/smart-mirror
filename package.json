@@ -9,6 +9,7 @@
     "gulp-util": "^3.0.7"
   },
   "dependencies": {
-    "gulp-util": "^3.0.8"
+    "gulp-util": "^3.0.8",
+    "redis": "^2.8.0"
   }
 }

@@ -1,0 +1,27 @@
+###
+# CMD+ALT+R
+###
+
+GET http://mirror.local:3000/api/status
+
+###
+
+GET http://mirror.local:3000/api/room/temperature
+
+###
+
+GET http://mirror.local:3000/api/room/presence
+
+###
+
+GET http://mirror.local:3000/api/weather
+
+###
+
+GET http://mirror.local:3000/api/news
+
+###
+
+GET http://mirror.local:3000/api/quote
+
+###

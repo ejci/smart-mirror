@@ -1,0 +1,164 @@
+<style>
+    .googleAssistant {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+    }
+
+    .googleAssistantLoader {
+        left: 0px;
+        top: 0gulppx;
+        width: 150px;
+        height: 90px;
+        padding: 0;
+        margin: 0;
+        background-color: white;
+        position: relative;
+    }
+
+    .dot {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+        width: 30px;
+        height: 30px;
+        border: 0;
+        border-radius: 15px;
+    }
+
+    .dot.loading {
+        position: absolute;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-name: dotsLoading;
+    }
+
+    .wrapper {
+        display: inline-block;
+        height: 90px;
+        background-color: pink;
+    }
+
+    .dot.speaking {
+        position: absolute;
+        top: 30px;
+        width: 30px;
+        animation-duration: 1s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        animation-name: dotsSpeaking;
+    }
+
+    .dot.blue {
+        left: -75px;
+        background-color: #00a1f1;
+    }
+
+    .dot.loading.blue {
+        animation-delay: 0s;
+    }
+
+    .dot.speaking.blue {
+        animation-delay: 0s;
+    }
+
+    .dot.red {
+        left: -35px;
+        background-color: #f65314;
+    }
+
+    .dot.loading.red {
+        animation-delay: 0.15s;
+    }
+
+    .dot.speaking.red {
+        animation-delay: 0.5s;
+    }
+
+    .dot.yellow {
+        left: 5px;
+        background-color: #ffbb00;
+    }
+
+    .dot.loading.yellow {
+        animation-delay: 0.30s;
+    }
+
+    .dot.speaking.yellow {
+        /* animation-delay: 0.0s;*/
+    }
+
+    .dot.green {
+        left: 45px;
+        background-color: #7cbb00;
+    }
+
+    .dot.loading.green {
+        animation-delay: 0.45s;
+    }
+
+    .dot.speaking.green {
+        animation-delay: 0.5s;
+    }
+
+    @keyframes dotsSpeaking {
+        0% {
+            top: 0px;
+            height: 30px;
+        }
+        50% {
+            top: -30px;
+            height: 90px;
+        }
+        100% {
+            top: 0px;
+            height: 30px;
+        }
+    }
+
+    @keyframes dotsLoading {
+        0% {
+            top: 0px;
+        }
+        25% {
+            top: -15px;
+        }
+        50% {
+            top: 0px;
+        }
+        75% {
+            top: 15px;
+        }
+        100% {
+            top: 0px;
+        }
+    }
+</style>
+
+<div class="googleAssistant">
+    google-assistant
+    <span>{{$ctrl.event}}</span>
+    <div class="googleAssistantLoader">
+        <div class="dot loading blue"></div>
+        <div class="dot loading red"></div>
+        <div class="dot loading yellow"></div>
+        <div class="dot loading green"></div>
+    </div>
+    <br /><br /><br /><br />
+    <div class="googleAssistantLoader">
+        <div class="wrapper">
+            <div class="dot speaking blue"></div>
+        </div>
+        <div class="wrapper">
+            <div class="dot speaking red"></div>
+        </div>
+        <div class="wrapper">
+            <div class="dot speaking yellow"></div>
+        </div>
+        <div class="wrapper">
+            <div class="dot speaking green"></div>
+        </div>
+    </div>
+
+</div>

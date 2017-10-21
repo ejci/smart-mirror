@@ -2,5 +2,6 @@
     "description": "Temperature and humidity sensor",
     "script": "si7021.py",
     "refresh": 60,
-    "endpoint": "http://127.0.0.1:3000/internal/temperature"
+    "endpoint": "http://127.0.0.1:3000/internal/temperature",
+    "event": "internal:temperature"
 }

@@ -1,9 +1,9 @@
 var exec = require('child_process').exec;
 var config = require(__dirname + '/airplay.json');
-var request = require('request');
+var redis = require("redis").createClient();
 var utf8 = require('utf8');
 
-var airplayScriptCmd = 'shairport-sync --name='+config.name+' --metadata-pipename=' + __dirname + '/' + config.script.meta + ' --on-start=' + __dirname + '/' + config.script.start + ' --on-stop=' + __dirname + '/' + config.script.stop + '';
+var airplayScriptCmd = 'shairport-sync --name=' + config.name + ' --metadata-pipename=' + __dirname + '/' + config.script.meta + ' --on-start=' + __dirname + '/' + config.script.start + ' --on-stop=' + __dirname + '/' + config.script.stop + '';
 var metaScriptCmd = 'shairport-sync-metadata-reader < ' + __dirname + '/' + config.script.meta + '';
 
 //console.log(airplayScript);
@@ -18,40 +18,33 @@ var meta = {
 };
 
 metaReader.stdout.on('data', function (data) {
-    var lines = utf8.decode(data).toString().split('\n');
+    //console.log(data)
+    var lines = data;
     var change = false;
-    lines.forEach(function (line) {
-        //console.log('meta: '+ line);
-        if (line.indexOf('Album Name: ') == 0) {
-            var out = line.replace('Album Name: ', '');
-            meta.album = out.trim().slice(1, -2);
-            change = true;
-        }
-        if (line.indexOf('Title: ') == 0) {
-            var out = line.replace('Title: ', '');
-            meta.title = out.trim().slice(1, -2);
-            change = true;
-        }
-        if (line.indexOf('Artist: ') == 0) {
-            var out = line.replace('Artist: ', '');
-            meta.artist = out.trim().slice(1, -2);
-            change = true;
-        }
-    });
+    if (lines && lines.length > 0) {
+        var lines = utf8.decode(data).toString().split('\n');
+        lines.forEach(function (line) {
+            //console.log('meta: '+ line);
+            if (line.indexOf('Album Name: ') == 0) {
+                var out = line.replace('Album Name: ', '');
+                meta.album = out.trim().slice(1, -2);
+                change = true;
+            }
+            if (line.indexOf('Title: ') == 0) {
+                var out = line.replace('Title: ', '');
+                meta.title = out.trim().slice(1, -2);
+                change = true;
+            }
+            if (line.indexOf('Artist: ') == 0) {
+                var out = line.replace('Artist: ', '');
+                meta.artist = out.trim().slice(1, -2);
+                change = true;
+            }
+        });
+    }
     if (change) {
         //console.info('Change detected...',JSON.stringify(meta));
-        //request.post(config.endpoint, meta);
-        request({
-            url: config.endpoint,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            json: meta
-        }, function (err, res, body) {
-            //dont care
-        });
-
+        redis.publish(config.event, JSON.stringify(meta));
     }
 });
 
@@ -62,5 +55,5 @@ console.log('Stop script        : ' + config.script.stop);
 console.log('Meta pipe          : ' + config.script.meta);
 console.log('Start command      : ' + airplayScriptCmd);
 console.log('Meta command       : ' + metaScriptCmd);
-console.log('Endpoint           : ' + config.endpoint);
+console.log('Event              : ' + config.event);
 

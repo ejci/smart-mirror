@@ -56,6 +56,21 @@ router.post('/airplay/meta', function (req, res, next) {
     });
 });
 
+router.post('/googleAssistant', function (req, res, next) {
+    var config = res.config;
+    var db = res.db;
+    var io = res.io;
+    //console.log(req.body);
+    //console.log(req.body.event);
+    //console.log(req.body.details);
+    if (req.body) {
+        io.emit('googleAssistant', { command: req.body });
+    }
+    res.send({
+        status: 'ok'
+    });
+});
+
 router.get('/knock/:count', function (req, res, next) {
     var config = res.config;
     var db = res.db;
@@ -90,6 +105,18 @@ router.get('/knock/:count', function (req, res, next) {
     }
     res.send('ok');
 });
+
+router.get('/auth/google', function (req, res, next) {
+    var config = res.config;
+    var db = res.db;
+    var io = res.io;
+    //console.log('/auth/google', req.body);
+    if (req.body) {
+        io.emit('auth', { type: 'google', activity: 'start' });
+    }
+    res.send('ok');
+});
+
 
 
 module.exports = router;

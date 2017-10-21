@@ -9,9 +9,11 @@ var levelup = require('levelup');
 var info = require('simple-node-info');
 
 router.get('/status', function (req, res, next) {
-  res.send({
+  var db = res.db;
+  res.json({
     status: 'ok',
-    server: info.getStat()
+    server: info.getStat(),
+    database: db.db.getProperty('leveldb.stats')
   });
 });
 

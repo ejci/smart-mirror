@@ -47,6 +47,18 @@ angular.module('components', []).component('clock', {
         });
 
     }
+}).component('googleAssistant', {
+    templateUrl: 'templates/google-assistant.html',
+    controller: function () {
+        var comp = this;
+        comp.event=null;
+        var socket = io();
+        socket.on('googleAssistant', function (msg) {
+            console.log('IO:googleAssistant', msg);
+            comp.event=msg.command;
+        });
+
+    }
 }).component('temperature', {
     templateUrl: 'templates/temperature.html',
     controller: function ($http, $interval) {

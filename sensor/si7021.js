@@ -1,5 +1,6 @@
 var exec = require('child_process').exec;
 var request = require('request');
+var redis = require("redis").createClient();
 var config = require(__dirname + '/si7021.json');
 var cmd = __dirname + '/' + config.script + '';
 var temperature = false;
@@ -12,23 +13,14 @@ var run = function () {
       temperature = Math.round(data.temperature, 2);
       humidity = Math.round(data.humidity, 2);
 
-        // POST process data to endpoint and ignore any errors
-      request({
-          url: config.endpoint,
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          json: {
-            temperature: temperature,
-            humidity: humidity
-          }
-      }, function (err, res, body) {
-        //dont care
-      });
+      redis.publish(config.event, JSON.stringify({
+        temperature: temperature,
+        humidity: humidity
+      }));
+
       //console.log('sending...', temperature, humidity);
     } else {
-      //console.error(stderr);
+      console.error(stderr);
     }
   });
 }
@@ -41,7 +33,6 @@ console.log('SI7021 sensor reader...')
 console.log('script             : ' + __dirname + '/' + config.script);
 console.log('Refresh interval   : ' + Math.round(config.refresh / 60, 0) + 'm ' + config.refresh % 60 + 's');
 console.log('Command            : ' + cmd);
-console.log('Endpoint           : ' + config.endpoint);
-
+console.log('Event              : ' + config.event);
 
 

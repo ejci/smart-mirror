@@ -7,12 +7,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var internalEvents = require('./utils/internal_events.js');
+
 var config = require('./config.json');
 
 
 var levelup = require('levelup');
 var db = levelup(__dirname + '/db', { valueEncoding: 'json' });
-
 
 
 var routes = require('./routes/index');
@@ -21,6 +22,7 @@ var internal = require('./routes/internal');
 
 
 var app = express();
+app.disable('x-powered-by');
 var io = require('socket.io');
 app.io = io();
 
@@ -58,6 +60,9 @@ app.io.on('connection', function (socket) {
   });
 });
 
+//attach to internal events
+internalEvents.use(app.io, db);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   var err = new Error('Not Found');
@@ -88,7 +93,6 @@ app.use(function (err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
 

@@ -20,8 +20,17 @@ angular.module('controllers', []).
       console.log('IO:reconnect');
       $window.location.reload();
     });
-    $scope.status = false;
 
+    socket.on('auth', function (msg) {
+      if (msg.activity == 'start') {
+        $scope.auth = true;
+      }
+      if (msg.activity == 'stop') {
+        $scope.auth = false;
+      }
+    });
+
+    $scope.status = false;
 
     $http({
       method: 'GET',

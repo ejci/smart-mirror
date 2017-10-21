@@ -27,7 +27,12 @@ gulp.task('default', false, function () {
 gulp.task('copy-server', 'Copy relevant files to ' + config.user + '@' + config.host + ' (~/server/).', function () {
     return gulp.src(['server/**', '!server/node_modules', '!server/node_modules/**', '!server/.DS_Store', '!server/.gitignore'])
         .pipe(ssh.dest('server/'));
+});
 
+//copy splash to rpi
+gulp.task('copy-splash', 'Copy relevant files to ' + config.user + '@' + config.host + ' (~/splash/).', function () {
+    return gulp.src(['splash/**'])
+        .pipe(ssh.dest('splash/'));
 });
 
 //copy sensor to rpi
@@ -52,7 +57,7 @@ gulp.task('copy-google-assistant', 'Copy relevant files to ' + config.user + '@'
 
 //copy main to rpi
 gulp.task('copy-main', 'Copy main files to ' + config.user + '@' + config.host + ' (~/).', function () {
-    return gulp.src(['autostart.sh', 'refresh.sh', 'start.sh', 'vnc.sh', 'permissions.sh'])
+    return gulp.src(['autostart.sh', 'refresh.sh', 'start.sh', 'vnc.sh', 'permissions.sh', 'install.sh'])
         .pipe(ssh.dest('.ssh-temp'));
 });
 
